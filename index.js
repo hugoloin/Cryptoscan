@@ -25,12 +25,7 @@ const bot = new SlackBot({
 const rp = require('request-promise');
 const requestOptions = {
     method: 'GET',
-    uri: 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
-    qs: {
-        start: 1,
-        limit: 1,
-        convert: 'EUR'
-    },
+    uri: 'https://api.coinmarketcap.com/v2/ticker/?convert=EUR&limit=10',
     headers: {
         'X-CMC_PRO_API_KEY': process.env.secret_key_coinmarketcap
     },
@@ -41,24 +36,36 @@ const requestOptions = {
 function fetchCrypto() {
 
     return rp(requestOptions).then(response => {
+        console.log('hey', response);
         return response;
     }).catch((err) => {
         console.log('API call error:', err.message);
     });
 }
+bot.on("start", function() {
+    bot.postMessageToChannel('ebm', 'Hello world!');
+});
 
-
-
-bot.on('start', function() {
+bot.on('message', function(message) {
     // more information about additional params https://api.slack.com/methods/chat.postMessage
-    var params = {
-        icon_emoji: ':love:'
-    };
-    // define channel, where bot exist. You can adjust it there https://my.slack.com/services
-    fetchCrypto().then(res => {
-        bot.postMessageToChannel('ebm', res.data[0].name, params);
+    if (message.type !== 'message') {
+        return;
+    }
+    handleMessage(message.text);
+});
+function handleMessage(message) {
+    switch (message) {
+        case "crypto":
+            sendGreeting();
+        break;
+        default:
+            return;
+    }
+}
+
+function sendGreeting() {
+    return fetchCrypto().then(res => {
+        bot.postMessageToChannel('ebm', res.data[1].name + ' value is ' + res.data[1].quotes.EUR.price +'€', params);
     });
 
-
-
-});
+}
