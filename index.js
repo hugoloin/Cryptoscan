@@ -6,12 +6,14 @@ const SlackBot = require('slackbots');
 const Botkit = require('botkit');
 const axios = require('axios');
 const config = require('./package.json');
+const env = require('dotenv').config();
+
 
 /**
  * Create a new Instance of Slack Bot
  */
 const bot = new SlackBot({
-    token: 'xoxb-487717201747-488056503376-z82o2Q3MCf7WuNGViowsFpEd',
+    token: process.env.secret_key_slack,
     name: 'cryptoscan',
 });
 
@@ -30,7 +32,7 @@ const requestOptions = {
         convert: 'EUR'
     },
     headers: {
-        'X-CMC_PRO_API_KEY': 'b83a23a6-91c1-4617-a151-ef837e6b921a'
+        'X-CMC_PRO_API_KEY': process.env.secret_key_coinmarketcap
     },
     json: true,
     gzip: true
