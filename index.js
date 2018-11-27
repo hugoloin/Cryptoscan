@@ -3,6 +3,7 @@
  */
 
 const SlackBot = require('slackbots');
+const Botkit = require('botkit');
 const axios = require('axios');
 const config = require('./package.json');
 
@@ -10,23 +11,14 @@ const config = require('./package.json');
  * Create a new Instance of Slack Bot
  */
 const bot = new SlackBot({
-    token: 'my key',
+    token: 'xoxb-487717201747-488056503376-z82o2Q3MCf7WuNGViowsFpEd',
     name: 'cryptoscan',
 });
 
-bot.on('start', function() {
-    // more information about additional params https://api.slack.com/methods/chat.postMessage
-    var params = {
-        icon_emoji: ':love:'
-    };
 
-    // define channel, where bot exist. You can adjust it there https://my.slack.com/services
-    bot.postMessageToChannel('ebm', 'meow!', params);
-
-
-});
 
 /* Example in Node.js ES6 using request-promise, concepts should translate to your language of choice */
+
 
 const rp = require('request-promise');
 const requestOptions = {
@@ -34,18 +26,37 @@ const requestOptions = {
     uri: 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
     qs: {
         start: 1,
-        limit: 10,
+        limit: 1,
         convert: 'EUR'
     },
     headers: {
-        'X-CMC_PRO_API_KEY': 'my key'
+        'X-CMC_PRO_API_KEY': 'b83a23a6-91c1-4617-a151-ef837e6b921a'
     },
     json: true,
     gzip: true
 };
 
-rp(requestOptions).then(response => {
-    console.log('API call response:', response);
-}).catch((err) => {
-    console.log('API call error:', err.message);
+function fetchCrypto() {
+
+    return rp(requestOptions).then(response => {
+        return response;
+    }).catch((err) => {
+        console.log('API call error:', err.message);
+    });
+}
+
+
+
+bot.on('start', function() {
+    // more information about additional params https://api.slack.com/methods/chat.postMessage
+    var params = {
+        icon_emoji: ':love:'
+    };
+    // define channel, where bot exist. You can adjust it there https://my.slack.com/services
+    fetchCrypto().then(res => {
+        bot.postMessageToChannel('ebm', res.data[0].name, params);
+    });
+
+
+
 });

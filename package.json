@@ -11,8 +11,11 @@
   "dependencies": {
     "axios": "^0.18.0",
     "babel": "^6.23.0",
+    "botkit": "^0.6.21",
     "eslint": "^5.9.0",
     "etherscan-api": "^9.0.0",
+    "request-promise": "^4.2.2",
+    "request-promise-node": "^1.0.1",
     "slackbots": "^0.3.0",
     "sqlite3": "^4.0.4"
   }
