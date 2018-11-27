@@ -1,0 +1,19 @@
+{
+  "name": "cryptoscan",
+  "version": "0.0.1",
+  "description": "bot for slake and etherscan",
+  "main": "index.js",
+  "scripts": {
+    "test": "1"
+  },
+  "author": "hugo",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "babel": "^6.23.0",
+    "eslint": "^5.9.0",
+    "etherscan-api": "^9.0.0",
+    "slackbots": "^0.3.0",
+    "sqlite3": "^4.0.4"
+  }
+}
